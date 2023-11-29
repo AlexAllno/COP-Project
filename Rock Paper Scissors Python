@@ -1,0 +1,65 @@
+import random
+
+def get_user_choice():
+    user_choice = input("Enter your choice (Rock, Paper, or Scissors): ").capitalize()
+    while user_choice not in ["Rock", "Paper", "Scissors"]:
+        print("Invalid choice. Please enter Rock, Paper, or Scissors.")
+        user_choice = input("Enter your choice: ").capitalize()
+    return user_choice
+
+def get_computer_choice():
+    return random.choice(["Rock", "Paper", "Scissors"])
+
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return "It's a tie!", 0
+    elif (
+        (user_choice == "Rock" and computer_choice == "Scissors") or
+        (user_choice == "Paper" and computer_choice == "Rock") or
+        (user_choice == "Scissors" and computer_choice == "Paper")
+    ):
+        return "You win!", 1
+    else:
+        return "You lose!", -1
+
+def play_round():
+    user_choice = get_user_choice()
+    computer_choice = get_computer_choice()
+
+    print(f"You chose {user_choice}.")
+    print(f"The computer chose {computer_choice}.")
+
+    result, score = determine_winner(user_choice, computer_choice)
+    print(result)
+
+    return score
+
+def play_game():
+    best_of = int(input("Enter the number of rounds for a 'best of' game (1, 3, 5, or 7): "))
+    while best_of not in [1, 3, 5, 7]:
+        print("Invalid choice. Please enter 1, 3, 5, or 7.")
+        best_of = int(input("Enter the number of rounds for a 'best of' game: "))
+
+    rounds_to_win = best_of // 2 + 1
+    user_wins = computer_wins = ties = 0
+
+    while user_wins < rounds_to_win and computer_wins < rounds_to_win:
+        score = play_round()
+
+        if score == 1:
+            user_wins += 1
+        elif score == -1:
+            computer_wins += 1
+        else:
+            ties += 1
+
+        print(f"Score - You: {user_wins}, Computer: {computer_wins}\n")
+
+    if user_wins > computer_wins:
+        print("Congratulations! You win the game.")
+    else:
+        print("Sorry, you lose. Better luck next time.")
+
+if __name__ == "__main__":
+    print("Welcome to Rock, Paper, Scissors!")
+    play_game()
